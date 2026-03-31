@@ -383,10 +383,10 @@
 <!-- Auth Gate -->
 <div id="auth-gate" class="auth-gate" style="display:none;">
   <h2>Admin Access</h2>
-  <p>Enter your email to continue.</p>
-  <input type="email" id="auth-email" placeholder="you@youremail.com" onkeydown="if(event.key==='Enter') checkAuth()" />
+  <p>Enter the password to continue.</p>
+  <input type="password" id="auth-password" placeholder="Password" onkeydown="if(event.key==='Enter') checkAuth()" />
   <button class="auth-btn" onclick="checkAuth()">Continue</button>
-  <p class="auth-error" id="auth-error">You don't have access. Contact Jude.</p>
+  <p class="auth-error" id="auth-error">Incorrect password.</p>
 </div>
 
 <!-- Main Dashboard -->
@@ -431,9 +431,9 @@
 
 <script>
   // ── CONFIGURATION ────────────────────────────────────────
-  const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbwMDe9iFpx_askbrr-7JDq5hpSaRt1X3ETAzPbfWgD1tuzgFQmg_PchvEdeljZcJZXS/exec";
+  const SCRIPT_URL  = "YOUR_APPS_SCRIPT_URL_HERE";
   const BASE_URL    = "https://yourusername.github.io/cml-pitch/form/";
-  const ADMIN_EMAILS = ["jude@youremail.com", "teammate@youremail.com"];
+  const ADMIN_PASSWORD = "5L007leafOFtheWall";
   // ─────────────────────────────────────────────────────────
 
   let forms = [];
@@ -441,9 +441,9 @@
 
   // ── Auth ─────────────────────────────────────────────────
   function checkAuth() {
-    const email = document.getElementById("auth-email").value.trim().toLowerCase();
-    if (ADMIN_EMAILS.map(e => e.toLowerCase()).includes(email)) {
-      localStorage.setItem("cml_admin_email", email);
+    const input = document.getElementById("auth-password").value;
+    if (input === ADMIN_PASSWORD) {
+      localStorage.setItem("cml_admin_authed", "true");
       showDashboard();
     } else {
       document.getElementById("auth-error").style.display = "block";
@@ -457,8 +457,8 @@
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    const saved = localStorage.getItem("cml_admin_email");
-    if (saved && ADMIN_EMAILS.map(e => e.toLowerCase()).includes(saved)) {
+    const authed = localStorage.getItem("cml_admin_authed");
+    if (authed === "true") {
       showDashboard();
     } else {
       document.getElementById("auth-gate").style.display = "block";
