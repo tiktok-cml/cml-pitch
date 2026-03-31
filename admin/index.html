@@ -377,7 +377,7 @@
     <div class="topbar-sep"></div>
     <div class="topbar-label">Pitch Form Admin</div>
   </div>
-  <button class="new-btn" onclick="openCreateModal()">+ New Form</button>
+  <button class="new-btn" id="new-form-btn" onclick="openCreateModal()" style="display:none;">+ New Form</button>
 </div>
 
 <!-- Auth Gate -->
@@ -398,7 +398,7 @@
     </div>
   </div>
   <div class="forms-grid" id="forms-grid">
-    <div class="empty-state"><div class="spinner"></div></div>
+    <div class="empty-state"><div class="spinner"></div><p style="color:#444;font-size:14px;margin-top:12px;">Loading forms...</p></div>
   </div>
 </div>
 
@@ -453,6 +453,7 @@
   function showDashboard() {
     document.getElementById("auth-gate").style.display = "none";
     document.getElementById("main").style.display = "block";
+    document.getElementById("new-form-btn").style.display = "block";
     loadForms();
   }
 
@@ -483,7 +484,7 @@
     count.textContent = `${forms.length} form${forms.length !== 1 ? "s" : ""}`;
 
     if (!forms.length) {
-      grid.innerHTML = `<div class="empty-state"><p>No forms yet. Create your first one.</p><button class="new-btn" onclick="openCreateModal()">+ New Form</button></div>`;
+      grid.innerHTML = `<div class="empty-state"><p>No forms yet — hit <strong style="color:#fff;">+ New Form</strong> in the top right to get started.</p></div>`;
       return;
     }
 
