@@ -18,6 +18,9 @@
     min-height: 100vh;
   }
 
+  /* Centered wrapper */
+  .page-wrap { max-width: 680px; margin: 0 auto; }
+
   /* Hero */
   .hero {
     padding: 48px 40px 36px;
@@ -304,7 +307,7 @@
 </div>
 
 <!-- Main Form -->
-<div id="main">
+<div id="main"><div class="page-wrap">
   <div class="hero">
     <div class="badge">CML x AIP</div>
     <div id="form-title">Loading...<span>.</span></div>
@@ -312,8 +315,8 @@
     <div id="form-deadline"></div>
     <div class="rules">
       <div class="rule"><div class="rule-dot"></div><strong>Up to 5 songs</strong> per submission</div>
-      <div class="rule"><div class="rule-dot"></div><strong>Song Name, Artist, ISRC &amp; UPC</strong> are required</div>
-      <div class="rule"><div class="rule-dot"></div>TikTok sound link and artist image increase placement odds</div>
+      <div class="rule"><div class="rule-dot"></div><strong>Song Name, Artist &amp; ISRC</strong> are required for each track</div>
+      <div class="rule"><div class="rule-dot"></div>TikTok Sound Link and Additional Info are always helpful!</div>
     </div>
   </div>
 
@@ -336,7 +339,7 @@
     </div>
     <div id="error-msg"></div>
   </div>
-</div>
+</div></div>
 
 <script>
   // ── CONFIGURATION ────────────────────────────────────────
@@ -376,7 +379,13 @@
     document.getElementById("form-playlist").textContent = formConfig.playlist ? "Playlist: " + formConfig.playlist : "";
     if (formConfig.deadline) {
       const dl = document.getElementById("form-deadline");
-      dl.textContent = "Deadline: " + formConfig.deadline;
+      const raw = formConfig.deadline;
+      let display = raw;
+      const parsed = new Date(raw);
+      if (!isNaN(parsed)) {
+        display = parsed.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+      }
+      dl.textContent = "Deadline: " + display;
       dl.style.display = "block";
     }
     document.title = formConfig.title + " — CML";
@@ -398,7 +407,7 @@
             <div class="field"><label>Song Title${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_title" placeholder="Track name" /></div>
             <div class="field"><label>Artist Name${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_artist" placeholder="Artist" /></div>
             <div class="field"><label>ISRC${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_isrc" placeholder="e.g. USRC17607839" /></div>
-            <div class="field"><label>UPC${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_upc" placeholder="12-digit code" /></div>
+            <div class="field"><label>UPC</label><input type="text" id="s${i}_upc" placeholder="12-digit code" /></div>
             <div class="field full"><label>TikTok Sound Link</label><input type="text" id="s${i}_tiktok" placeholder="https://www.tiktok.com/music/..." /></div>
             <div class="field full"><label>Additional Notes</label><input type="text" id="s${i}_notes" placeholder="Artist image link, context, genre, etc." /></div>
           </div>
@@ -419,12 +428,18 @@
     const company = val("company"), name = val("name"), email = val("email");
     if (!company || !name || !email) { showError("Please fill in all required partner info fields."); return; }
 
-    // Validate songs 1-3 required fields
-    for (let i = 1; i <= 3; i++) {
-      if (!val(`s${i}_title`) || !val(`s${i}_artist`) || !val(`s${i}_isrc`) || !val(`s${i}_upc`)) {
-        showError(`Song ${i} is missing required fields (Title, Artist, ISRC, UPC).`); return;
+    // Validate: at least 1 song, and any filled song must have Title + Artist + ISRC
+    let filledCount = 0;
+    for (let i = 1; i <= 5; i++) {
+      const t = val(`s${i}_title`), a = val(`s${i}_artist`), r = val(`s${i}_isrc`);
+      if (t || a || r) {
+        filledCount++;
+        if (!t || !a || !r) {
+          showError(`Song ${i} is incomplete — please fill in Title, Artist, and ISRC.`); return;
+        }
       }
     }
+    if (filledCount === 0) { showError("Please add at least one song to submit."); return; }
 
     const songs = [];
     for (let i = 1; i <= 5; i++) {
