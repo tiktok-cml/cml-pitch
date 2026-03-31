@@ -305,7 +305,7 @@
   </div>
   <div class="state-title" style="font-size:32px;margin-bottom:16px;">Pitch Submitted</div>
   <p class="state-sub" style="font-size:16px;max-width:420px;margin:0 auto 12px;line-height:1.7;color:#aaa;">We look forward to reviewing your tracks! Thank you so much for your CML participation.</p>
-  <p class="state-sub" style="font-size:13px;color:#555;max-width:420px;margin:0 auto;">Reach out to Jude at <a href="mailto:jude.lucchese@bytedance.com" style="color:#2af0ea;text-decoration:none;">jude.lucchese@bytedance.com</a> if you have any questions.</p>
+  <p class="state-sub" style="font-size:13px;color:#555;max-width:420px;margin:0 auto;">Reach out to Jude at <a href="/cdn-cgi/l/email-protection#c8a2bdacade6a4bdababa0adbbad88aab1bcadaca9a6abade6aba7a5" style="color:#2af0ea;text-decoration:none;"><span class="__cf_email__" data-cfemail="c5afb0a1a0eba9b0a6a6ada0b6a085a7bcb1a0a1a4aba6a0eba6aaa8">[email&#160;protected]</span></a> if you have any questions.</p>
 </div>
 
 <!-- Main Form -->
@@ -343,7 +343,7 @@
   </div>
 </div></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── CONFIGURATION ────────────────────────────────────────
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMDe9iFpx_askbrr-7JDq5hpSaRt1X3ETAzPbfWgD1tuzgFQmg_PchvEdeljZcJZXS/exec";
   // ─────────────────────────────────────────────────────────
@@ -459,15 +459,4 @@
       });
       const data = await res.json();
       if (data.success) { show("success"); }
-      else { showError(data.error || "Something went wrong. Try again."); btn.disabled = false; btn.textContent = "Submit Pitch"; }
-    } catch(e) {
-      showError("Network error. Please try again.");
-      btn.disabled = false;
-      btn.textContent = "Submit Pitch";
-    }
-  }
-
-  loadForm();
-</script>
-</body>
-</html>
+      else { showError(data.error || "Something went wrong. Tr
