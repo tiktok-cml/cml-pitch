@@ -6,9 +6,6 @@
 <title>CML Pitch Form</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  /* ── CONFIG: paste your Apps Script deployment URL here ── */
-  /* See SCRIPT_URL variable in the <script> section below   */
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -19,10 +16,8 @@
     min-height: 100vh;
   }
 
-  /* Centered wrapper */
   .page-wrap { max-width: 800px; margin: 0 auto; }
 
-  /* Hero */
   .hero {
     padding: 64px 48px 48px;
     border-bottom: 1px solid #1a1a1a;
@@ -53,7 +48,6 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
     background: #fe2858;
     color: #fff;
     font-family: 'Syne', sans-serif;
@@ -77,11 +71,7 @@
   }
   #form-title span { color: #2af0ea; }
 
-  #form-playlist {
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 6px;
-  }
+  #form-playlist { font-size: 13px; color: #555; margin-bottom: 6px; }
 
   #form-deadline {
     font-size: 12px;
@@ -90,32 +80,12 @@
     display: none;
   }
 
-  .rules {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .rule {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: #666;
-  }
-  .rule-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #2af0ea;
-    flex-shrink: 0;
-  }
+  .rules { margin-top: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .rule { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #666; }
+  .rule-dot { width: 5px; height: 5px; border-radius: 50%; background: #2af0ea; flex-shrink: 0; }
   .rule strong { color: #bbb; font-weight: 500; }
 
-  /* Body */
-  .body {
-    padding: 48px 48px 80px;
-    max-width: 680px;
-  }
+  .body { padding: 48px 48px 80px; }
 
   .section-label {
     font-family: 'Syne', sans-serif;
@@ -129,13 +99,7 @@
   }
 
   .field { margin-bottom: 16px; }
-  .field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: #999;
-    margin-bottom: 6px;
-  }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: #999; margin-bottom: 6px; }
   .field label em { color: #fe2858; font-style: normal; margin-left: 2px; }
 
   input[type=text], input[type=email] {
@@ -153,11 +117,7 @@
   input:focus { border-color: #2af0ea; }
   input::placeholder { color: #333; }
 
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
   .song-card {
     background: #0a0a0a;
@@ -165,16 +125,9 @@
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 14px;
-    transition: border-color 0.2s;
   }
-  .song-card:focus-within { border-color: #222; }
 
-  .song-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
+  .song-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
   .song-num {
     width: 26px; height: 26px;
     border-radius: 50%;
@@ -186,22 +139,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
   .song-num.opt { background: #1a1a1a; color: #444; }
-  .song-title {
+  .song-label {
     font-family: 'Syne', sans-serif;
     font-size: 13px;
     font-weight: 700;
     color: #fff;
     letter-spacing: 0.04em;
   }
-  .song-title small { color: #444; font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 4px; }
+  .song-label small { color: #444; font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 4px; }
 
-  .song-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  .song-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .song-grid .full { grid-column: 1 / -1; }
 
   .divider { height: 1px; background: #111; margin: 28px 0 0; }
@@ -235,20 +185,9 @@
 
   .submit-note { font-size: 12px; color: #444; line-height: 1.5; }
 
-  #error-msg {
-    color: #fe2858;
-    font-size: 13px;
-    margin-top: 10px;
-    display: none;
-  }
+  #error-msg { color: #fe2858; font-size: 13px; margin-top: 10px; display: none; }
 
-  /* States */
-  .loading-state, .success-state, .closed-state { display: none; }
-
-  .state-wrap {
-    padding: 80px 40px;
-    text-align: center;
-  }
+  .state-wrap { padding: 80px 40px; text-align: center; }
   .state-icon {
     width: 56px; height: 56px;
     border-radius: 50%;
@@ -258,16 +197,9 @@
     justify-content: center;
   }
   .state-icon.teal { background: #2af0ea; }
-  .state-icon.red { background: #fe2858; }
   .state-icon.gray { background: #1a1a1a; }
 
-  .state-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 24px;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 8px;
-  }
+  .state-title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
   .state-sub { font-size: 14px; color: #555; }
 
   .spinner {
@@ -279,18 +211,18 @@
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  #loading, #closed, #success, #main { display: none; }
 </style>
 </head>
 <body>
 
-<!-- Loading -->
-<div class="loading-state state-wrap" id="loading">
+<div id="loading" class="state-wrap">
   <div class="spinner"></div>
   <p class="state-sub">Loading form...</p>
 </div>
 
-<!-- Closed -->
-<div class="closed-state state-wrap" id="closed">
+<div id="closed" class="state-wrap">
   <div class="state-icon gray">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#666" stroke-width="2" stroke-linecap="round"/></svg>
   </div>
@@ -298,60 +230,50 @@
   <p class="state-sub">This playlist is no longer accepting submissions.</p>
 </div>
 
-<!-- Success -->
-<div class="success-state state-wrap" id="success">
+<div id="success" class="state-wrap">
   <div class="state-icon teal" style="width:72px;height:72px;">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><polyline points="4,12 10,18 20,6" stroke="#040404" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <div class="state-title" style="font-size:32px;margin-bottom:16px;">Pitch Submitted</div>
   <p class="state-sub" style="font-size:16px;max-width:420px;margin:0 auto 12px;line-height:1.7;color:#aaa;">We look forward to reviewing your tracks! Thank you so much for your CML participation.</p>
-  <p class="state-sub" style="font-size:13px;color:#555;max-width:420px;margin:0 auto;">Reach out to Jude at <a href="/cdn-cgi/l/email-protection#c8a2bdacade6a4bdababa0adbbad88aab1bcadaca9a6abade6aba7a5" style="color:#2af0ea;text-decoration:none;"><span class="__cf_email__" data-cfemail="c5afb0a1a0eba9b0a6a6ada0b6a085a7bcb1a0a1a4aba6a0eba6aaa8">[email&#160;protected]</span></a> if you have any questions.</p>
+  <p class="state-sub" style="font-size:13px;color:#555;max-width:420px;margin:0 auto;">Reach out to Jude at <a href="mailto:jude.lucchese@bytedance.com" style="color:#2af0ea;text-decoration:none;">jude.lucchese@bytedance.com</a> if you have any questions.</p>
 </div>
 
-<!-- Main Form -->
-<div id="main"><div class="page-wrap">
-  <div class="hero">
-    <div class="badge">TIKTOK CML</div>
-    <div id="form-title">Loading...<span>.</span></div>
-    <div id="form-playlist"></div>
-    <div id="form-deadline"></div>
-    <div class="rules">
-      <div class="rule"><div class="rule-dot"></div><strong>Up to 5 songs</strong> per submission</div>
-      <div class="rule"><div class="rule-dot"></div><strong>Song Name, Artist &amp; ISRC</strong> are required for each track</div>
-      <div class="rule"><div class="rule-dot"></div>TikTok Sound Link and Additional Info are always helpful!</div>
+<div id="main">
+  <div class="page-wrap">
+    <div class="hero">
+      <div class="badge">TIKTOK CML</div>
+      <div id="form-title"></div>
+      <div id="form-playlist"></div>
+      <div id="form-deadline"></div>
+      <div class="rules">
+        <div class="rule"><div class="rule-dot"></div><strong>Up to 5 songs</strong> per submission</div>
+        <div class="rule"><div class="rule-dot"></div><strong>Song Name, Artist &amp; ISRC</strong> are required for each track</div>
+        <div class="rule"><div class="rule-dot"></div>TikTok Sound Link and Additional Info are always helpful!</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="section-label">Partner Info</div>
+      <div class="two-col">
+        <div class="field"><label>Company / Organization<em>*</em></label><input id="company" type="text" placeholder="e.g. Roc Nation Distribution" /></div>
+        <div class="field"><label>Your Name<em>*</em></label><input id="name" type="text" placeholder="First & Last" /></div>
+      </div>
+      <div class="field"><label>Email Address<em>*</em></label><input id="email" type="email" placeholder="you@company.com" /></div>
+      <div class="divider"></div>
+      <div class="section-label" style="margin-top:28px;">Your Tracks</div>
+      <div id="songs-wrap"></div>
+      <div class="submit-row">
+        <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit Pitch</button>
+        <p class="submit-note">We'll review all submissions<br>and be in touch if selected.</p>
+      </div>
+      <div id="error-msg"></div>
     </div>
   </div>
+</div>
 
-  <div class="body">
-    <div class="section-label">Partner Info</div>
-    <div class="two-col">
-      <div class="field"><label>Company / Organization<em>*</em></label><input id="company" type="text" placeholder="e.g. Roc Nation Distribution" /></div>
-      <div class="field"><label>Your Name<em>*</em></label><input id="name" type="text" placeholder="First &amp; Last" /></div>
-    </div>
-    <div class="field"><label>Email Address<em>*</em></label><input id="email" type="email" placeholder="you@company.com" /></div>
-
-    <div class="divider"></div>
-    <div class="section-label" style="margin-top: 28px;">Your Tracks</div>
-
-    <div id="songs-wrap"></div>
-
-    <div class="submit-row">
-      <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit Pitch</button>
-      <p class="submit-note">We'll review all submissions<br>and be in touch if selected.</p>
-    </div>
-    <div id="error-msg"></div>
-  </div>
-</div></div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── CONFIGURATION ────────────────────────────────────────
+<script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxnpmmyTHA10Th2q80MKWAafEkLe0L8ZLIGdetChIRDQxpSqXOjL7ePGXQSN6qGVck/exec";
-  // ─────────────────────────────────────────────────────────
-
-  // Get form ID from URL: ?id=form_xxx
-  const params = new URLSearchParams(window.location.search);
-  const FORM_ID = params.get("id");
-
+  const FORM_ID = new URLSearchParams(window.location.search).get("id");
   let formConfig = null;
 
   function show(id) {
@@ -364,33 +286,31 @@
     if (!FORM_ID) { show("closed"); return; }
     show("loading");
     try {
-      const res = await fetch(`${SCRIPT_URL}?action=getForm&id=${FORM_ID}`);
+      const res = await fetch(SCRIPT_URL + "?action=getForm&id=" + FORM_ID);
       const data = await res.json();
-      if (data.error || !data.form) { show("closed"); return; }
+      if (!data.form || data.error) { show("closed"); return; }
       formConfig = data.form;
       if (!formConfig.active) { show("closed"); return; }
       renderForm();
       show("main");
     } catch(e) {
+      console.error("loadForm error:", e);
       show("closed");
     }
   }
 
   function renderForm() {
-    document.getElementById("form-title").innerHTML = formConfig.title.replace(/Szn/g, '<span>Szn</span>');
+    document.getElementById("form-title").textContent = formConfig.title;
     document.getElementById("form-playlist").textContent = formConfig.playlist ? "Playlist: " + formConfig.playlist : "";
     if (formConfig.deadline) {
       const dl = document.getElementById("form-deadline");
-      const raw = formConfig.deadline;
-      let display = raw;
-      const parsed = new Date(raw);
-      if (!isNaN(parsed)) {
-        display = parsed.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-      }
-      dl.textContent = "Deadline: " + display;
+      const parsed = new Date(formConfig.deadline);
+      dl.textContent = "Deadline: " + (!isNaN(parsed)
+        ? parsed.toLocaleDateString("en-US", { month:"long", day:"numeric", year:"numeric" })
+        : formConfig.deadline);
       dl.style.display = "block";
     }
-    document.title = formConfig.title + " — CML";
+    document.title = formConfig.title + " — TikTok CML";
     renderSongs();
   }
 
@@ -399,16 +319,17 @@
     wrap.innerHTML = "";
     for (let i = 1; i <= 5; i++) {
       const opt = i > 3;
+      const req = opt ? "" : "<em>*</em>";
       wrap.innerHTML += `
         <div class="song-card">
           <div class="song-header">
-            <div class="song-num ${opt ? 'opt' : ''}">${i}</div>
-            <div class="song-title">Song ${i}${opt ? '<small>optional</small>' : ''}</div>
+            <div class="song-num ${opt ? "opt" : ""}">${i}</div>
+            <div class="song-label">Song ${i}${opt ? "<small>optional</small>" : ""}</div>
           </div>
           <div class="song-grid">
-            <div class="field"><label>Song Title${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_title" placeholder="Track name" /></div>
-            <div class="field"><label>Artist Name${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_artist" placeholder="Artist" /></div>
-            <div class="field"><label>ISRC${!opt ? '<em>*</em>' : ''}</label><input type="text" id="s${i}_isrc" placeholder="e.g. USRC17607839" /></div>
+            <div class="field"><label>Song Title${req}</label><input type="text" id="s${i}_title" placeholder="Track name" /></div>
+            <div class="field"><label>Artist Name${req}</label><input type="text" id="s${i}_artist" placeholder="Artist" /></div>
+            <div class="field"><label>ISRC${req}</label><input type="text" id="s${i}_isrc" placeholder="e.g. USRC17607839" /></div>
             <div class="field"><label>UPC</label><input type="text" id="s${i}_upc" placeholder="12-digit code" /></div>
             <div class="field full"><label>TikTok Sound Link</label><input type="text" id="s${i}_tiktok" placeholder="https://www.tiktok.com/music/..." /></div>
             <div class="field full"><label>Additional Notes</label><input type="text" id="s${i}_notes" placeholder="Artist image link, context, genre, etc." /></div>
@@ -417,46 +338,47 @@
     }
   }
 
-  function val(id) { return (document.getElementById(id) || {}).value?.trim() || ""; }
-
-  function showError(msg) {
-    const el = document.getElementById("error-msg");
-    el.textContent = msg;
-    el.style.display = "block";
-  }
+  function val(id) { return (document.getElementById(id)||{}).value?.trim()||""; }
+  function showError(msg) { const el=document.getElementById("error-msg"); el.textContent=msg; el.style.display="block"; }
 
   async function submitForm() {
     document.getElementById("error-msg").style.display = "none";
-    const company = val("company"), name = val("name"), email = val("email");
-    if (!company || !name || !email) { showError("Please fill in all required partner info fields."); return; }
+    const company=val("company"), name=val("name"), email=val("email");
+    if (!company||!name||!email) { showError("Please fill in all required partner info fields."); return; }
 
-    // Validate: at least 1 song, and any filled song must have Title + Artist + ISRC
-    let filledCount = 0;
-    for (let i = 1; i <= 5; i++) {
-      const t = val(`s${i}_title`), a = val(`s${i}_artist`), r = val(`s${i}_isrc`);
-      if (t || a || r) {
-        filledCount++;
-        if (!t || !a || !r) {
-          showError(`Song ${i} is incomplete — please fill in Title, Artist, and ISRC.`); return;
-        }
+    let filled = 0;
+    for (let i=1;i<=5;i++) {
+      const t=val("s"+i+"_title"), a=val("s"+i+"_artist"), r=val("s"+i+"_isrc");
+      if (t||a||r) {
+        filled++;
+        if (!t||!a||!r) { showError("Song "+i+" is incomplete — please fill in Title, Artist, and ISRC."); return; }
       }
     }
-    if (filledCount === 0) { showError("Please add at least one song to submit."); return; }
+    if (filled===0) { showError("Please add at least one song to submit."); return; }
 
     const songs = [];
-    for (let i = 1; i <= 5; i++) {
-      songs.push({ title: val(`s${i}_title`), artist: val(`s${i}_artist`), isrc: val(`s${i}_isrc`), upc: val(`s${i}_upc`), tiktok: val(`s${i}_tiktok`), notes: val(`s${i}_notes`) });
+    for (let i=1;i<=5;i++) {
+      songs.push({ title:val("s"+i+"_title"), artist:val("s"+i+"_artist"), isrc:val("s"+i+"_isrc"), upc:val("s"+i+"_upc"), tiktok:val("s"+i+"_tiktok"), notes:val("s"+i+"_notes") });
     }
 
     const btn = document.getElementById("submit-btn");
-    btn.disabled = true;
-    btn.textContent = "Submitting...";
+    btn.disabled=true; btn.textContent="Submitting...";
 
     try {
       const res = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "submitPitch", formId: FORM_ID, partnerCompany: company, partnerName: name, partnerEmail: email, songs })
+        method:"POST",
+        body: JSON.stringify({ action:"submitPitch", formId:FORM_ID, partnerCompany:company, partnerName:name, partnerEmail:email, songs })
       });
       const data = await res.json();
       if (data.success) { show("success"); }
-      else { showError(data.error || "Something went wrong. Tr
+      else { showError(data.error||"Something went wrong. Try again."); btn.disabled=false; btn.textContent="Submit Pitch"; }
+    } catch(e) {
+      showError("Network error. Please try again.");
+      btn.disabled=false; btn.textContent="Submit Pitch";
+    }
+  }
+
+  loadForm();
+</script>
+</body>
+</html>
