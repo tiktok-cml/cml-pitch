@@ -255,10 +255,10 @@
     <div class="body">
       <div class="section-label">Partner Info</div>
       <div class="two-col">
-        <div class="field"><label>Company / Organization<em>*</em></label><input id="company" type="text" placeholder="e.g. Roc Nation Distribution" /></div>
-        <div class="field"><label>Your Name<em>*</em></label><input id="name" type="text" placeholder="First & Last" /></div>
+        <div class="field"><label>Company / Organization<em>*</em></label><input id="company" type="text" placeholder="e.g. CML Records" /></div>
+        <div class="field"><label>Your Name<em>*</em></label><input id="name" type="text" placeholder="Your full name" /></div>
       </div>
-      <div class="field"><label>Email Address<em>*</em></label><input id="email" type="email" placeholder="you@company.com" /></div>
+      <div class="field"><label>Email Address<em>*</em></label><input id="email" type="email" placeholder="your@email.com" /></div>
       <div class="divider"></div>
       <div class="section-label" style="margin-top:28px;">Your Tracks</div>
       <div id="songs-wrap"></div>
@@ -327,12 +327,12 @@
             <div class="song-label">Song ${i}${opt ? "<small>optional</small>" : ""}</div>
           </div>
           <div class="song-grid">
-            <div class="field"><label>Song Title${req}</label><input type="text" id="s${i}_title" placeholder="Track name" /></div>
-            <div class="field"><label>Artist Name${req}</label><input type="text" id="s${i}_artist" placeholder="Artist" /></div>
-            <div class="field"><label>ISRC${req}</label><input type="text" id="s${i}_isrc" placeholder="e.g. USRC17607839" /></div>
-            <div class="field"><label>UPC</label><input type="text" id="s${i}_upc" placeholder="12-digit code" /></div>
-            <div class="field full"><label>TikTok Sound Link</label><input type="text" id="s${i}_tiktok" placeholder="https://www.tiktok.com/music/..." /></div>
-            <div class="field full"><label>Additional Notes</label><input type="text" id="s${i}_notes" placeholder="Artist image link, context, genre, etc." /></div>
+            <div class="field"><label>Song Title${req}</label><input type="text" id="s${i}_title" placeholder="Song title" /></div>
+            <div class="field"><label>Artist Name${req}</label><input type="text" id="s${i}_artist" placeholder="Artist name" /></div>
+            <div class="field"><label>ISRC${req}</label><input type="text" id="s${i}_isrc" placeholder="e.g. USANG2513860" /></div>
+            <div class="field"><label>UPC</label><input type="text" id="s${i}_upc" placeholder="UPC code" /></div>
+            <div class="field full"><label>TikTok Sound Link</label><input type="text" id="s${i}_tiktok" placeholder="TikTok sound URL" /></div>
+            <div class="field full"><label>Additional Notes</label><input type="text" id="s${i}_notes" placeholder="Genre, mood, additional context" /></div>
           </div>
         </div>`;
     }
