@@ -127,7 +127,8 @@
   .page-count { font-size: 13px; color: #444; margin-top: 2px; }
 
   /* Form cards grid */
-  .forms-grid {
+  .forms-grid { transition: opacity 0.2s ease;
+
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
@@ -502,9 +503,18 @@
     localStorage.setItem("cml_region", currentRegion);
     applyRegionStyle();
     const overlay = document.getElementById("region-loading");
-    document.getElementById("region-loading-text").textContent = "Switching to " + currentRegion + "...";
+    const grid = document.getElementById("forms-grid");
+    const textEl = document.getElementById("region-loading-text");
+    textEl.style.animation = "none";
+    textEl.offsetHeight;
+    textEl.style.animation = "";
+    textEl.textContent = currentRegion;
+    grid.style.opacity = "0";
     overlay.classList.add("show");
-    loadForms(() => overlay.classList.remove("show"));
+    loadForms(() => {
+      overlay.classList.remove("show");
+      grid.style.opacity = "1";
+    });
   }
 
   function applyRegionStyle() {
