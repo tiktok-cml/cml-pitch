@@ -274,6 +274,7 @@
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxnpmmyTHA10Th2q80MKWAafEkLe0L8ZLIGdetChIRDQxpSqXOjL7ePGXQSN6qGVck/exec";
   const FORM_ID = new URLSearchParams(window.location.search).get("id");
+  const REGION = new URLSearchParams(window.location.search).get("region") || "NA";
   let formConfig = null;
 
   function show(id) {
@@ -286,7 +287,7 @@
     if (!FORM_ID) { show("closed"); return; }
     show("loading");
     try {
-      const res = await fetch(SCRIPT_URL + "?action=getForm&id=" + FORM_ID);
+      const res = await fetch(SCRIPT_URL + "?action=getForm&id=" + FORM_ID + "&region=" + REGION);
       const data = await res.json();
       if (!data.form || data.error) { show("closed"); return; }
       formConfig = data.form;
@@ -367,7 +368,7 @@
     try {
       const res = await fetch(SCRIPT_URL, {
         method:"POST",
-        body: JSON.stringify({ action:"submitPitch", formId:FORM_ID, partnerCompany:company, partnerName:name, partnerEmail:email, songs })
+        body: JSON.stringify({ action:"submitPitch", formId:FORM_ID, region:REGION, partnerCompany:company, partnerName:name, partnerEmail:email, songs })
       });
       const data = await res.json();
       if (data.success) { show("success"); }
