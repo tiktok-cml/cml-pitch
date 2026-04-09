@@ -405,6 +405,12 @@
   <button class="new-btn" id="new-form-btn" onclick="openCreateModal()" style="display:none;">+ New Form</button>
 </div>
 
+<!-- Region Loading Overlay -->
+<div class="region-loading" id="region-loading">
+  <div class="region-loading-spinner"></div>
+  <div class="region-loading-text" id="region-loading-text">Switching to NA...</div>
+</div>
+
 <!-- Auth Gate -->
 <div id="auth-gate" class="auth-gate" style="display:none;">
   <h2>Admin Access</h2>
@@ -495,7 +501,10 @@
     currentRegion = document.getElementById("region-select").value;
     localStorage.setItem("cml_region", currentRegion);
     applyRegionStyle();
-    loadForms();
+    const overlay = document.getElementById("region-loading");
+    document.getElementById("region-loading-text").textContent = "Switching to " + currentRegion + "...";
+    overlay.classList.add("show");
+    loadForms(() => overlay.classList.remove("show"));
   }
 
   function applyRegionStyle() {
@@ -513,7 +522,7 @@
   });
 
   // ── Load forms ───────────────────────────────────────────
-  async function loadForms() {
+  async function loadForms(callback) {
     try {
       const res = await fetch(`${SCRIPT_URL}?action=getForms&region=${currentRegion}`);
       const data = await res.json();
@@ -521,6 +530,8 @@
       renderForms();
     } catch(e) {
       toast("Failed to load forms", false);
+    } finally {
+      if (callback) callback();
     }
   }
 
