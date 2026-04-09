@@ -504,7 +504,7 @@
     applyRegionStyle();
     const overlay = document.getElementById("region-loading");
     const grid = document.getElementById("forms-grid");
-    document.getElementById("region-loading-text").textContent = currentRegion;
+    document.getElementById("region-loading-text").textContent = "Switching to " + currentRegion + "...";
     grid.innerHTML = "";
     overlay.style.display = "flex";
     loadForms(() => {
