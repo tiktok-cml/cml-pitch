@@ -568,7 +568,7 @@
           </div>
           <div class="card-actions">
             <button class="action-btn edit" onclick="openEditModal('${f.id}')">Edit</button>
-            <button class="action-btn ${f.active ? 'toggle-off' : 'toggle-live'}" onclick="toggleForm('${f.id}')">${f.active ? 'Pause' : 'Go Live'}</button>
+            <button class="action-btn ${f.active ? 'toggle-off' : 'toggle-live'}" onclick="toggleForm('${f.id}', ${f.active})">${f.active ? 'Pause' : 'Go Live'}</button>
             <button class="action-btn del" onclick="deleteForm('${f.id}')">Delete</button>
           </div>
         </div>`;
@@ -585,22 +585,24 @@
   }
 
   // ── Toggle ───────────────────────────────────────────────
-  async function toggleForm(id) {
+  async function toggleForm(id, isPausing) {
+    setCardLoading(id, isPausing ? "Pausing..." : "Going Live...");
     try {
       const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "toggleForm", id, region: currentRegion }) });
       const data = await res.json();
       if (data.success) { toast(data.active ? "Form is now live" : "Form paused", true); loadForms(); }
-    } catch(e) { toast("Failed to update form", false); }
+    } catch(e) { toast("Failed to update form", false); loadForms(); }
   }
 
   // ── Delete ───────────────────────────────────────────────
   async function deleteForm(id) {
     if (!confirm("Delete this form? This cannot be undone.")) return;
+    setCardLoading(id, "Deleting...");
     try {
       const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteForm", id, region: currentRegion }) });
       const data = await res.json();
       if (data.success) { toast("Form deleted", false); loadForms(); }
-    } catch(e) { toast("Failed to delete form", false); }
+    } catch(e) { toast("Failed to delete form", false); loadForms(); }
   }
 
   // ── Modal ────────────────────────────────────────────────
@@ -677,6 +679,24 @@
 
     btn.disabled = false;
     btn.textContent = editingId ? "Save Changes" : "Create Form";
+  }
+
+  // ── Card Loading State ───────────────────────────────────
+  function setCardLoading(id, label) {
+    const card = document.getElementById("card-" + id);
+    if (!card) return;
+    card.style.position = "relative";
+    card.style.overflow = "hidden";
+    const overlay = document.createElement("div");
+    overlay.style.cssText = "position:absolute;inset:0;background:rgba(4,4,4,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;border-radius:12px;z-index:10;";
+    const spinner = document.createElement("div");
+    spinner.style.cssText = "width:28px;height:28px;border:2px solid #1a1a1a;border-top-color:#2af0ea;border-radius:50%;animation:spin 0.7s linear infinite;";
+    const text = document.createElement("div");
+    text.style.cssText = "font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#2af0ea;";
+    text.textContent = label;
+    overlay.appendChild(spinner);
+    overlay.appendChild(text);
+    card.appendChild(overlay);
   }
 
   // ── Toast ────────────────────────────────────────────────
