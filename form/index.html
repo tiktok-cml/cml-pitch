@@ -234,9 +234,9 @@
   <div class="state-icon teal" style="width:72px;height:72px;">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><polyline points="4,12 10,18 20,6" stroke="#040404" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
-  <div class="state-title" style="font-size:32px;margin-bottom:16px;">Pitch Submitted</div>
-  <p class="state-sub" style="font-size:16px;max-width:420px;margin:0 auto 12px;line-height:1.7;color:#aaa;">Your pitch has been received! Our team will take it from here — no need to reach out for confirmation! Thank you for being part of this!</p>
-  <p class="state-sub" style="font-size:13px;color:#555;max-width:420px;margin:0 auto;">Reach out to Jude at <a href="mailto:jude.lucchese@bytedance.com" style="color:#2af0ea;text-decoration:none;">jude.lucchese@bytedance.com</a> if you have any questions.</p>
+  <div class="state-title" style="font-size:32px;margin-bottom:16px;" id="success-title">Pitch Submitted</div>
+  <p class="state-sub" id="success-msg" style="font-size:16px;max-width:420px;margin:0 auto 12px;line-height:1.7;color:#aaa;">Your pitch has been received! Our team will take it from here — no need to reach out for confirmation! Thank you for being part of this!</p>
+  <p class="state-sub" id="success-contact" style="font-size:13px;color:#555;max-width:420px;margin:0 auto;">Reach out to Jude at <a href="mailto:jude.lucchese@bytedance.com" style="color:#2af0ea;text-decoration:none;">jude.lucchese@bytedance.com</a> if you have any questions.</p>
 </div>
 
 <div id="main">
@@ -287,7 +287,7 @@
     if (!FORM_ID) { show("closed"); return; }
     show("loading");
     try {
-      const res = await fetch(SCRIPT_URL + "?action=getForm&id=" + FORM_ID + "&region=" + REGION);
+      const res = await fetch(SCRIPT_URL + "?action=getForm&id=" + FORM_ID + "&region=" + REGION, { redirect: "follow" });
       const data = await res.json();
       if (!data.form || data.error) { show("closed"); return; }
       formConfig = data.form;
@@ -368,10 +368,18 @@
     try {
       const res = await fetch(SCRIPT_URL, {
         method:"POST",
+        redirect: "follow",
         body: JSON.stringify({ action:"submitPitch", formId:FORM_ID, region:REGION, partnerCompany:company, partnerName:name, partnerEmail:email, songs })
       });
       const data = await res.json();
-      if (data.success) { show("success"); }
+      if (data.success) {
+        if (REGION === "APAC") {
+          document.getElementById("success-title").textContent = "Thank You!";
+          document.getElementById("success-msg").style.display = "none";
+          document.getElementById("success-contact").style.display = "none";
+        }
+        show("success");
+      }
       else { showError(data.error||"Something went wrong. Try again."); btn.disabled=false; btn.textContent="Submit Pitch"; }
     } catch(e) {
       showError("Network error. Please try again.");
