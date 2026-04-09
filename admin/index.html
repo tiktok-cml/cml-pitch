@@ -366,6 +366,26 @@
     margin-right: 6px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .region-select {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .region-select:focus { border-color: #2af0ea; }
+  .region-select option { background: #111; color: #fff; }
+  .region-na { border-color: #fe2858; color: #fe2858; }
+  .region-apac { border-color: #2af0ea; color: #2af0ea; }
 </style>
 </head>
 <body>
@@ -376,6 +396,11 @@
     <div class="topbar-logo">TIKTOK <span>CML</span></div>
     <div class="topbar-sep"></div>
     <div class="topbar-label">Pitch Form Admin</div>
+    <div class="topbar-sep"></div>
+    <select class="region-select region-na" id="region-select" onchange="switchRegion()" style="display:none;">
+      <option value="NA">🌎 NA</option>
+      <option value="APAC">🌏 APAC</option>
+    </select>
   </div>
   <button class="new-btn" id="new-form-btn" onclick="openCreateModal()" style="display:none;">+ New Form</button>
 </div>
@@ -431,9 +456,14 @@
 
 <script>
   // ── CONFIGURATION ────────────────────────────────────────
-  const SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbxxnpmmyTHA10Th2q80MKWAafEkLe0L8ZLIGdetChIRDQxpSqXOjL7ePGXQSN6qGVck/exec";
-  const BASE_URL    = "https://tiktok-cml.github.io/cml-pitch/form/";
+  const SCRIPT_URL     = "https://script.google.com/macros/s/AKfycbxxnpmmyTHA10Th2q80MKWAafEkLe0L8ZLIGdetChIRDQxpSqXOjL7ePGXQSN6qGVck/exec";
+  const BASE_URL       = "https://tiktok-cml.github.io/cml-pitch/form/";
   const ADMIN_PASSWORD = "5L007leafOFtheWall";
+  const REGIONS = {
+    NA:   { label: "NA",   sheetParam: "NA" },
+    APAC: { label: "APAC", sheetParam: "APAC" }
+  };
+  let currentRegion = localStorage.getItem("cml_region") || "NA";
   // ─────────────────────────────────────────────────────────
 
   let forms = [];
@@ -454,7 +484,23 @@
     document.getElementById("auth-gate").style.display = "none";
     document.getElementById("main").style.display = "block";
     document.getElementById("new-form-btn").style.display = "block";
+    const sel = document.getElementById("region-select");
+    sel.style.display = "block";
+    sel.value = currentRegion;
+    applyRegionStyle();
     loadForms();
+  }
+
+  function switchRegion() {
+    currentRegion = document.getElementById("region-select").value;
+    localStorage.setItem("cml_region", currentRegion);
+    applyRegionStyle();
+    loadForms();
+  }
+
+  function applyRegionStyle() {
+    const sel = document.getElementById("region-select");
+    sel.className = currentRegion === "APAC" ? "region-select region-apac" : "region-select region-na";
   }
 
   window.addEventListener("DOMContentLoaded", () => {
@@ -469,7 +515,7 @@
   // ── Load forms ───────────────────────────────────────────
   async function loadForms() {
     try {
-      const res = await fetch(`${SCRIPT_URL}?action=getForms`);
+      const res = await fetch(`${SCRIPT_URL}?action=getForms&region=${currentRegion}`);
       const data = await res.json();
       forms = data.forms || [];
       renderForms();
@@ -489,7 +535,7 @@
     }
 
     grid.innerHTML = forms.map(f => {
-      const link = `${BASE_URL}?id=${f.id}`;
+      const link = `${BASE_URL}?id=${f.id}&region=${currentRegion}`;
       return `
         <div class="form-card ${f.active ? '' : 'inactive'}" id="card-${f.id}">
           <div class="card-top">
@@ -525,7 +571,7 @@
   // ── Toggle ───────────────────────────────────────────────
   async function toggleForm(id) {
     try {
-      const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "toggleForm", id }) });
+      const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "toggleForm", id, region: currentRegion }) });
       const data = await res.json();
       if (data.success) { toast(data.active ? "Form is now live" : "Form paused", true); loadForms(); }
     } catch(e) { toast("Failed to update form", false); }
@@ -535,7 +581,7 @@
   async function deleteForm(id) {
     if (!confirm("Delete this form? This cannot be undone.")) return;
     try {
-      const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteForm", id }) });
+      const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "deleteForm", id, region: currentRegion }) });
       const data = await res.json();
       if (data.success) { toast("Form deleted", false); loadForms(); }
     } catch(e) { toast("Failed to delete form", false); }
@@ -594,8 +640,8 @@
     try {
       const action = editingId ? "updateForm" : "createForm";
       const body = editingId
-        ? { action, id: editingId, title, playlist, deadline }
-        : { action, title, playlist, deadline };
+        ? { action, id: editingId, title, playlist, deadline, region: currentRegion }
+        : { action, title, playlist, deadline, region: currentRegion };
 
       const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(body) });
       const data = await res.json();
