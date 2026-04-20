@@ -274,7 +274,7 @@
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxnpmmyTHA10Th2q80MKWAafEkLe0L8ZLIGdetChIRDQxpSqXOjL7ePGXQSN6qGVck/exec";
   const FORM_ID = new URLSearchParams(window.location.search).get("id");
-  const REGION = new URLSearchParams(window.location.search).get("region") || "NA";
+  const REGION = new URLSearchParams(window.location.search).get("region") || "NA/EMEA";
   let formConfig = null;
 
   function show(id) {
@@ -319,13 +319,12 @@
     const wrap = document.getElementById("songs-wrap");
     wrap.innerHTML = "";
     for (let i = 1; i <= 5; i++) {
-      const opt = i > 3;
-      const req = opt ? "" : "<em>*</em>";
+      const req = "<em>*</em>";
       wrap.innerHTML += `
         <div class="song-card">
           <div class="song-header">
-            <div class="song-num ${opt ? "opt" : ""}">${i}</div>
-            <div class="song-label">Song ${i}${opt ? "<small>optional</small>" : ""}</div>
+            <div class="song-num">${i}</div>
+            <div class="song-label">Song ${i}${i === 1 ? "<small style=\"color:#fe2858;font-size:10px;font-weight:600;margin-left:6px;text-transform:uppercase;letter-spacing:0.06em;\">required</small>" : ""}</div>
           </div>
           <div class="song-grid">
             <div class="field"><label>Song Title${req}</label><input type="text" id="s${i}_title" placeholder="Song title" /></div>
